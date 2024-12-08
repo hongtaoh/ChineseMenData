@@ -211,6 +211,105 @@ plt.tight_layout()
 plt.show()
 ```
 
+## 身高
+
+### 数据来源
+
+身高分布基于不同年龄段的人体生长规律。通过定义各年龄段的身高均值和标准差，结合正态分布模拟真实的身高分布。以下是生成逻辑：
+
+1. **儿童阶段（0-6 岁）**：
+   - 基准均值随年龄递增，1 岁约 80 cm，每年增长约 7 cm。
+   - 标准差为 5 cm。
+2. **青少年阶段（6-18 岁）**：
+   - 身高增长逐步放缓：
+     - 6-14 岁每年增长约 5 cm。
+     - 14-18 岁每年增长约 3 cm。
+   - 标准差为 6 cm。
+3. **成年人阶段（18 岁及以上）**：
+   - 不同年龄段的身高均值逐渐下降：
+     - 18-20 岁均值为 172 cm。
+     - 20-30 岁均值为 174 cm，随后每 10 年略微降低。
+   - 标准差均为 6 cm。
+4. **老年阶段（60 岁及以上）**：
+   - 均值降至 168 cm，身高略微下降。
+
+---
+
+### 生成方法
+
+1. **按年龄段定义身高分布**：
+   - 不同年龄段的均值和标准差如下表所示：
+
+| 年龄段         | 均值（cm）         | 标准差（cm） |
+|----------------|--------------------|-------------|
+| 0-6 岁         | $80 + \text{age} \times 7$ | 5           |
+| 6-14 岁        | $115 + (\text{age} - 6) \times 5$ | 6           |
+| 14-18 岁       | $155 + (\text{age} - 14) \times 3$ | 6           |
+| 18-20 岁       | 172                | 6           |
+| 20-30 岁       | 174                | 6           |
+| 30-40 岁       | 173                | 6           |
+| 40-50 岁       | 171                | 6           |
+| 50-60 岁       | 170                | 6           |
+| 60 岁及以上    | 168                | 6           |
+
+2. **正态分布生成**：
+   - 使用定义的均值和标准差，为每个年龄生成对应的身高。
+   - 为避免极端值，使用截断正态分布，限制范围为 [60, 200] cm。
+
+3. **随机生成**：
+   - 通过 `np.random.normal` 随机生成每个样本的身高，并使用 `np.clip` 截断至合理范围。
+
+---
+
+### 示例代码
+
+以下为实现逻辑的代码片段：
+
+```python
+def get_height_params(age):
+    """根据年龄获取身高的均值和标准差"""
+    if age < 6:
+        mean = 80 + age * 7
+        std = 5
+    elif 6 <= age < 14:
+        mean = 115 + (age - 6) * 5
+        std = 6
+    elif 14 <= age < 18:
+        mean = 155 + (age - 14) * 3
+        std = 6
+    elif 18 <= age < 20:
+        mean = 172
+        std = 6
+    elif 20 <= age < 30:
+        mean = 174
+        std = 6
+    elif 30 <= age < 40:
+        mean = 173
+        std = 6
+    elif 40 <= age < 50:
+        mean = 171
+        std = 6
+    elif 50 <= age < 60:
+        mean = 170
+        std = 6
+    else:
+        mean = 168
+        std = 6
+    return mean, std
+
+def generate_height(ages):
+    """为给定年龄生成身高"""
+    heights = []
+    for age in ages:
+        mean, std = get_height_params(age)
+        min_height = max(mean - 3 * std, 60)
+        max_height = min(mean + 3 * std, 200)
+        height = np.random.normal(mean, std)
+        height = np.clip(height, min_height, max_height)
+        heights.append(round(height))
+    return heights
+```
+
 
 ## 家乡
 
@@ -487,103 +586,6 @@ def generate_income(ages, education_levels):
 ```
 
 
-## 身高
-
-### 数据来源
-
-身高分布基于不同年龄段的人体生长规律。通过定义各年龄段的身高均值和标准差，结合正态分布模拟真实的身高分布。以下是生成逻辑：
-
-1. **儿童阶段（0-6 岁）**：
-   - 基准均值随年龄递增，1 岁约 80 cm，每年增长约 7 cm。
-   - 标准差为 5 cm。
-2. **青少年阶段（6-18 岁）**：
-   - 身高增长逐步放缓：
-     - 6-14 岁每年增长约 5 cm。
-     - 14-18 岁每年增长约 3 cm。
-   - 标准差为 6 cm。
-3. **成年人阶段（18 岁及以上）**：
-   - 不同年龄段的身高均值逐渐下降：
-     - 18-20 岁均值为 172 cm。
-     - 20-30 岁均值为 174 cm，随后每 10 年略微降低。
-   - 标准差均为 6 cm。
-4. **老年阶段（60 岁及以上）**：
-   - 均值降至 168 cm，身高略微下降。
-
----
-
-### 生成方法
-
-1. **按年龄段定义身高分布**：
-   - 不同年龄段的均值和标准差如下表所示：
-
-| 年龄段         | 均值（cm）         | 标准差（cm） |
-|----------------|--------------------|-------------|
-| 0-6 岁         | $80 + \text{age} \times 7$ | 5           |
-| 6-14 岁        | $115 + (\text{age} - 6) \times 5$ | 6           |
-| 14-18 岁       | $155 + (\text{age} - 14) \times 3$ | 6           |
-| 18-20 岁       | 172                | 6           |
-| 20-30 岁       | 174                | 6           |
-| 30-40 岁       | 173                | 6           |
-| 40-50 岁       | 171                | 6           |
-| 50-60 岁       | 170                | 6           |
-| 60 岁及以上    | 168                | 6           |
-
-2. **正态分布生成**：
-   - 使用定义的均值和标准差，为每个年龄生成对应的身高。
-   - 为避免极端值，使用截断正态分布，限制范围为 [60, 200] cm。
-
-3. **随机生成**：
-   - 通过 `np.random.normal` 随机生成每个样本的身高，并使用 `np.clip` 截断至合理范围。
-
----
-
-### 示例代码
-
-以下为实现逻辑的代码片段：
-
-```python
-def get_height_params(age):
-    """根据年龄获取身高的均值和标准差"""
-    if age < 6:
-        mean = 80 + age * 7
-        std = 5
-    elif 6 <= age < 14:
-        mean = 115 + (age - 6) * 5
-        std = 6
-    elif 14 <= age < 18:
-        mean = 155 + (age - 14) * 3
-        std = 6
-    elif 18 <= age < 20:
-        mean = 172
-        std = 6
-    elif 20 <= age < 30:
-        mean = 174
-        std = 6
-    elif 30 <= age < 40:
-        mean = 173
-        std = 6
-    elif 40 <= age < 50:
-        mean = 171
-        std = 6
-    elif 50 <= age < 60:
-        mean = 170
-        std = 6
-    else:
-        mean = 168
-        std = 6
-    return mean, std
-
-def generate_height(ages):
-    """为给定年龄生成身高"""
-    heights = []
-    for age in ages:
-        mean, std = get_height_params(age)
-        min_height = max(mean - 3 * std, 60)
-        max_height = min(mean + 3 * std, 200)
-        height = np.random.normal(mean, std)
-        height = np.clip(height, min_height, max_height)
-        heights.append(round(height))
-    return heights
 
 
 
