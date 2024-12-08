@@ -634,11 +634,14 @@ def generate_income(ages, education_levels):
        - 农村：1.2。
 
 3. **最终概率计算**：
-   - 使用以下公式计算条件概率：
-    $$
-     P(\text{现居住地} \mid \text{家乡, 教育水平}) = P(\text{现居住地} \mid \text{家乡}) \times \text{教育修正系数}
-    $$
-   - 并归一化以确保总和为 1。
+
+- 使用以下公式计算条件概率：
+
+$$
+P(\text{现居住地} \mid \text{家乡, 教育水平}) = P(\text{现居住地} \mid \text{家乡}) \times \text{教育修正系数}
+$$
+
+- 并归一化以确保总和为 1。
 
 ### 示例代码
 
