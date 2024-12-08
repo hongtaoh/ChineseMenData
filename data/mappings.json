@@ -1,0 +1,320 @@
+{
+    "mappings": {
+        "education": {
+            "高中及以下": 0,
+            "大专": 1,
+            "本科": 2,
+            "研究生及以上": 3
+        },
+        "income": {
+            "<5万": 0,
+            "5-15万": 1,
+            "15-30万": 2,
+            "30-50万": 3,
+            "50-100万": 4,
+            ">100万": 5
+        },
+        "personal_assets": {
+            "<10万": 0,
+            "10-50万": 1,
+            "50-200万": 2,
+            "200-500万": 3,
+            "500-1000万": 4,
+            ">1000万": 5
+        },
+        "hometown": {
+            "农村": 0,
+            "县城": 1,
+            "三线城市": 2,
+            "二线城市": 3,
+            "一线城市": 4
+        },
+        "current_location": {
+            "农村": 0,
+            "县城": 1,
+            "三线城市": 2,
+            "二线城市": 3,
+            "一线城市": 4
+        },
+        "vision": {
+            "不近视": 0,
+            "近视低于400度": 1,
+            "近视高于400度": 2
+        },
+        "health_status": {
+            "健康": 0,
+            "亚健康": 1,
+            "慢性病": 2,
+            "重大疾病": 3
+        },
+        "marital_status": {
+            "未婚": 0,
+            "离异无孩子": 1,
+            "离异有孩子": 2,
+            "已婚": 3
+        },
+        "property_status": {
+            "无房产": 0,
+            "有房有贷款": 1,
+            "有房无贷款": 2
+        },
+        "smoking_habit": {
+            "不吸烟": 0,
+            "偶尔吸烟": 1,
+            "经常吸烟": 2
+        },
+        "drinking_habit": {
+            "禁酒": 0,
+            "偶尔喝": 1,
+            "经常喝": 2
+        },
+        "face_score": {
+            "1": 0,
+            "2": 1,
+            "3": 2,
+            "4": 3,
+            "5": 4
+        },
+        "humor_score": {
+            "1": 0,
+            "2": 1,
+            "3": 2,
+            "4": 3,
+            "5": 4
+        },
+        "sex_attract_score": {
+            "1": 0,
+            "2": 1,
+            "3": 2,
+            "4": 3,
+            "5": 4
+        },
+        "body_score": {
+            "1": 0,
+            "2": 1,
+            "3": 2,
+            "4": 3,
+            "5": 4
+        },
+        "religion": {
+            "无信仰": 0,
+            "有宗教信仰": 1
+        }
+    },
+    "ordered_variables": [
+        "education",
+        "income",
+        "personal_assets",
+        "hometown",
+        "current_location",
+        "vision",
+        "health_status",
+        "marital_status",
+        "property_status",
+        "smoking_habit",
+        "drinking_habit",
+        "face_score",
+        "humor_score",
+        "sex_attract_score",
+        "body_score"
+    ],
+    "categorical_variables": [
+        "religion"
+    ],
+    "continuous_variables": [
+        "age",
+        "height"
+    ],
+    "variable_descriptions": {
+        "age": {
+            "description": "年龄（连续值）",
+            "type": "continuous",
+            "range": "0-100岁",
+            "comments": "基于2022年人口抽样调查数据生成"
+        },
+        "height": {
+            "description": "身高（厘米）",
+            "type": "continuous",
+            "range": "150-200cm",
+            "comments": "考虑年龄对身高的影响"
+        },
+        "education": {
+            "description": "教育程度（有序）",
+            "type": "ordinal",
+            "values": [
+                "高中及以下",
+                "大专",
+                "本科",
+                "研究生及以上"
+            ],
+            "comments": "基于全国教育程度分布数据"
+        },
+        "income": {
+            "description": "年收入（有序）",
+            "type": "ordinal",
+            "values": [
+                "<5万",
+                "5-15万",
+                "15-30万",
+                "30-50万",
+                "50-100万",
+                ">100万"
+            ],
+            "comments": "考虑年龄、教育程度对收入的影响"
+        },
+        "personal_assets": {
+            "description": "个人总资产（有序）",
+            "type": "ordinal",
+            "values": [
+                "<10万",
+                "10-50万",
+                "50-200万",
+                "200-500万",
+                "500-1000万",
+                ">1000万"
+            ],
+            "comments": "考虑年龄、收入、城市等级的综合影响"
+        },
+        "hometown": {
+            "description": "家乡所在地（有序）",
+            "type": "ordinal",
+            "values": [
+                "农村",
+                "县城",
+                "三线城市",
+                "二线城市",
+                "一线城市"
+            ],
+            "comments": "按城市等级排序"
+        },
+        "current_location": {
+            "description": "当前居住地（有序）",
+            "type": "ordinal",
+            "values": [
+                "农村",
+                "县城",
+                "三线城市",
+                "二线城市",
+                "一线城市"
+            ],
+            "comments": "与hometown共同反映人口流动"
+        },
+        "vision": {
+            "description": "视力状况（有序）",
+            "type": "ordinal",
+            "values": [
+                "不近视",
+                "近视低于400度",
+                "近视高于400度"
+            ],
+            "comments": "与教育程度相关"
+        },
+        "health_status": {
+            "description": "健康状况（有序）",
+            "type": "ordinal",
+            "values": [
+                "健康",
+                "亚健康",
+                "慢性病",
+                "重大疾病"
+            ],
+            "comments": "与年龄相关"
+        },
+        "marital_status": {
+            "description": "婚姻状况（有序）",
+            "type": "ordinal",
+            "values": [
+                "未婚",
+                "离异无孩子",
+                "离异有孩子",
+                "已婚"
+            ],
+            "comments": "与年龄相关"
+        },
+        "property_status": {
+            "description": "房产状况（有序）",
+            "type": "ordinal",
+            "values": [
+                "无房产",
+                "有房有贷款",
+                "有房无贷款"
+            ],
+            "comments": "与收入、年龄、城市等级相关"
+        },
+        "smoking_habit": {
+            "description": "吸烟习惯（有序）",
+            "type": "ordinal",
+            "values": [
+                "不吸烟",
+                "偶尔吸烟",
+                "经常吸烟"
+            ]
+        },
+        "drinking_habit": {
+            "description": "饮酒习惯（有序）",
+            "type": "ordinal",
+            "values": [
+                "禁酒",
+                "偶尔喝",
+                "经常喝"
+            ]
+        },
+        "face_score": {
+            "description": "颜值评分（有序）",
+            "type": "ordinal",
+            "values": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "comments": "影响sex_attract_score"
+        },
+        "humor_score": {
+            "description": "幽默感评分（有序）",
+            "type": "ordinal",
+            "values": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "comments": "影响sex_attract_score"
+        },
+        "sex_attract_score": {
+            "description": "性吸引力评分（有序）",
+            "type": "ordinal",
+            "values": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "comments": "由face_score、body_score、humor_score、height和age共同影响"
+        },
+        "body_score": {
+            "description": "身材评分（有序）",
+            "type": "ordinal",
+            "values": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "comments": "影响sex_attract_score"
+        },
+        "religion": {
+            "description": "宗教信仰（分类）",
+            "type": "categorical",
+            "values": [
+                "无信仰",
+                "有宗教信仰"
+            ]
+        }
+    },
+    "creation_date": "2024-12-08"
+}
