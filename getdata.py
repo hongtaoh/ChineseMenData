@@ -313,7 +313,7 @@ def get_height_params(age):
     """
     if age < 6:
         # 参考儿童生长曲线
-        mean = 80 + age * 7  # 粗略估计，1岁75cm左右，每年增长7cm
+        mean = 80 + age * 7  # 粗略估计，1岁80cm左右，每年增长7cm
         std = 5
     elif 6 <= age < 14:
         # 青少年快速生长期
