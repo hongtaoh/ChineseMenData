@@ -612,8 +612,6 @@ def generate_income(ages, education_levels):
 3. **最终条件概率计算**：
    - 通过结合基础流动概率和教育水平的影响系数，生成条件概率 $P(\text{现居住地} \mid \text{家乡, 教育水平})$。
 
----
-
 ### 逻辑细节
 
 1. **基础流动矩阵**：
@@ -637,12 +635,10 @@ def generate_income(ages, education_levels):
 
 3. **最终概率计算**：
    - 使用以下公式计算条件概率：
-    $$\[
+    $$
      P(\text{现居住地} \mid \text{家乡, 教育水平}) = P(\text{现居住地} \mid \text{家乡}) \times \text{教育修正系数}
-     \]$$
+    $$
    - 并归一化以确保总和为 1。
-
----
 
 ### 示例代码
 
@@ -724,7 +720,161 @@ def generate_current_location(hometowns, education_levels):
     return current_locations
 ```
 
+## 房产状况
 
+### 数据来源
+
+房产状况模拟基于个体的 **收入**、**现居住地** 和 **年龄**。我们定义了三个房产状态：
+
+1. **无房产**。
+2. **有房有贷款**。
+3. **有房无贷款**。
+
+### 生成方法
+
+房产状况的生成遵循以下逻辑：
+
+1. **基础购房难度**：
+   - 不同城市的房价和购房难度差异显著，按城市等级定义购房难度系数。例如：
+     - 一线城市：购房难度系数为 2.5。
+     - 农村：购房难度系数为 0.7。
+
+2. **收入的影响**：
+   - 收入档次决定了购房能力，每个收入档次对应的基础概率为：
+     | 收入档次  | 无房产 | 有房有贷款 | 有房无贷款 |
+     |-----------|--------|------------|------------|
+     | <5万      | 80%    | 15%        | 5%         |
+     | 5-15万    | 70%    | 25%        | 5%         |
+     | 15-30万   | 50%    | 40%        | 10%        |
+     | 30-50万   | 30%    | 50%        | 20%        |
+     | 50-100万  | 20%    | 45%        | 35%        |
+     | >100万    | 10%    | 35%        | 55%        |
+
+3. **年龄的影响**：
+   - 年龄影响购房意愿和还贷进度：
+     - **<25岁**：无房产的比例较高。
+     - **25-40岁**：买房高峰期，有房有贷款的比例增加。
+     - **>40岁**：还贷进程加快，有房无贷款的比例显著增加。
+
+4. **计算条件概率**：
+   - 综合购房难度、收入和年龄影响系数，生成条件概率 $P(\text{房产状态} \mid \text{收入, 现居住地, 年龄})$。
+
+### 逻辑细节
+
+1. **购房难度调整**：
+   - 每个城市等级的购房难度系数用于调整基础概率。例如：
+     - 一线城市：无房产的概率乘以 2.5，有房无贷款的概率除以 2.5。
+
+2. **收入基础概率**：
+每个收入档次的基础概率为：
+
+$$
+\text{调整后概率} = 
+\begin{bmatrix}
+P(\text{无房产}) \times \text{购房难度系数} \\
+P(\text{有房有贷款}) \\
+P(\text{有房无贷款}) \div \text{购房难度系数}
+\end{bmatrix}
+$$
+
+3. **年龄调整系数**：
+   - 年龄对房产状态的调整系数为：
+     | 年龄段      | 无房产 | 有房有贷款 | 有房无贷款 |
+     |-------------|--------|------------|------------|
+     | <25岁       | 1.5    | 0.3        | 0.1        |
+     | 25-30岁     | 1.2    | 0.8        | 0.4        |
+     | 30-40岁     | 0.8    | 1.2        | 0.8        |
+     | 40-50岁     | 0.7    | 1.0        | 1.2        |
+     | >50岁       | 0.6    | 0.7        | 1.5        |
+
+$$
+\text{年龄调整后的概率} = \text{调整后概率} \times \text{年龄系数}
+$$
+
+4. **条件概率计算公式**：
+
+综合购房难度调整、收入基础概率和年龄调整系数：
+
+$$
+P(\text{房产状态} \mid \text{收入, 现居住地, 年龄}) = 
+\frac{\text{年龄调整后的概率}}{\sum \text{年龄调整后的概率}}
+$$
+
+最终结果归一化为概率分布。
+
+
+### 代码
+
+```py
+def get_property_probabilities(income, current_location, age):
+    """
+    获取房产状态的概率分布
+    property_status = ['无房产', '有房有贷款', '有房无贷款']
+    """
+    # 基础购房难度系数（越大表示越难买房）
+    location_difficulty = {
+        '一线城市': 2.5,
+        '二线城市': 1.8,
+        '三线城市': 1.3,
+        '县城': 1.0,
+        '农村': 0.7
+    }
+    
+    # 收入档位对应的基础有房概率
+    income_base_probs = {
+        '<5万': [0.80, 0.15, 0.05],      # [无房产, 有房有贷款, 有房无贷款]
+        '5-15万': [0.70, 0.25, 0.05],
+        '15-30万': [0.50, 0.40, 0.10],
+        '30-50万': [0.30, 0.50, 0.20],
+        '50-100万': [0.20, 0.45, 0.35],
+        '>100万': [0.10, 0.35, 0.55]
+    }
+    
+    # 年龄影响系数
+    def get_age_factor(age):
+        if age < 25:
+            return [1.5, 0.3, 0.1]  # 年轻人更可能无房
+        elif 25 <= age < 30:
+            return [1.2, 0.8, 0.4]  # 开始买房
+        elif 30 <= age < 40:
+            return [0.8, 1.2, 0.8]  # 买房高峰期
+        elif 40 <= age < 50:
+            return [0.7, 1.0, 1.2]  # 开始还清贷款
+        else:
+            return [0.6, 0.7, 1.5]  # 更可能已还清贷款
+    
+    # 获取基础概率
+    base_probs = np.array(income_base_probs[income])
+    
+    # 应用城市难度系数
+    difficulty = location_difficulty[current_location]
+    adjusted_probs = np.array([
+        base_probs[0] * difficulty,  # 无房概率增加
+        base_probs[1],              # 有贷款概率保持
+        base_probs[2] / difficulty  # 无贷款概率降低
+    ])
+    
+    # 应用年龄影响
+    age_factors = np.array(get_age_factor(age))
+    final_probs = adjusted_probs * age_factors
+    
+    # 归一化
+    final_probs = final_probs / final_probs.sum()
+    
+    return final_probs
+
+def generate_property_status(incomes, current_locations, ages):
+    """为给定的收入和居住地生成房产状态"""
+    property_status_levels = ['无房产', '有房有贷款', '有房无贷款']
+    property_status = []
+    
+    for income, location, age in zip(incomes, current_locations, ages):
+        probs = get_property_probabilities(income, location, age)
+        status = np.random.choice(property_status_levels, p=probs)
+        property_status.append(status)
+    
+    return property_status
+```
 
 
 
