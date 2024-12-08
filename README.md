@@ -896,3 +896,293 @@ def get_marital_status_probabilities(age):
     return np.array(probs) / np.sum(probs)
 ```
 
+## 健康状况
+
+受年龄影响。
+
+代码：
+
+```py
+def get_health_status_probabilities(age):
+    """
+    根据年龄返回健康状况的概率分布
+    health_status = ['健康', '亚健康', '慢性病', '重大疾病']
+    """
+    if age < 25:
+        probs = [0.90, 0.08, 0.015, 0.005]
+    elif 25 <= age < 35:
+        probs = [0.85, 0.12, 0.03, 0.01]
+    elif 35 <= age < 45:
+        probs = [0.75, 0.15, 0.08, 0.02]
+    elif 45 <= age < 55:
+        probs = [0.65, 0.20, 0.12, 0.03]
+    elif 55 <= age < 65:
+        probs = [0.50, 0.25, 0.20, 0.05]
+    else:
+        probs = [0.35, 0.30, 0.28, 0.07]
+    
+    # 确保概率和为1
+    return np.array(probs) / np.sum(probs)
+```
+
+## 宗教、吸烟、饮酒
+
+独立变量。代码如下
+
+```py
+def generate_independent_features(n_samples):
+    """生成其他独立的特征"""
+    # 其他分类特征
+    return {
+        'religion': np.random.choice(
+            ['无信仰', '有宗教信仰'],
+            size=n_samples,
+            p=[0.95, 0.05]
+        ),
+        'smoking_habit': np.random.choice(
+            ['不吸烟', '偶尔吸烟', '经常吸烟'],
+            size=n_samples,
+            p=[0.70, 0.20, 0.10]
+        ),
+        'drinking_habit': np.random.choice(
+            ['禁酒', '偶尔喝', '经常喝'],
+            size=n_samples,
+            p=[0.50, 0.40, 0.10]
+        ),
+    }
+```
+
+## 颜值、身材、幽默感、性吸引力
+
+前三者为独立变量。代码如下
+
+```py
+def generate_scores(n_samples, ages, heights):
+    """生成所有评分特征"""
+    # 生成基础分数
+    basic_scores = {
+        'face_score': np.random.randint(1, 6, size=n_samples),
+        'humor_score': np.random.randint(1, 6, size=n_samples),
+        'body_score': np.random.randint(1, 6, size=n_samples)
+    }
+    
+    # 计算性吸引力得分
+    sex_attract_scores = []
+    for i in range(n_samples):
+        score = calculate_sex_attract_score(
+            basic_scores['face_score'][i],
+            basic_scores['body_score'][i],
+            basic_scores['humor_score'][i],
+            heights[i],
+            ages[i]
+        )
+        sex_attract_scores.append(score)
+    
+    return {
+        **basic_scores,
+        'sex_attract_score': sex_attract_scores
+    }
+```
+
+### 性吸引力
+
+受年龄、身高、颜值、身材、幽默感影响。代码如下
+
+```py
+def get_height_attraction_factor(height):
+    """
+    计算身高对性吸引力的影响因子
+    180以上：极高加成
+    175-180：高加成
+    170-175：正常
+    170以下：略微降低
+    """
+    if height >= 180:
+        return 1.5  # 显著提升性吸引力
+    elif 175 <= height < 180:
+        return 1.3  # 较高提升
+    elif 170 <= height < 175:
+        return 1.0  # 标准水平
+    elif 165 <= height < 170:
+        return 0.9  # 略微降低
+    else:
+        return 0.8  # 明显降低
+
+def get_age_attraction_factor(age):
+    """
+    计算年龄对性吸引力的影响因子
+    考虑男性在不同年龄段的魅力特点
+    """
+    if 25 <= age < 35:
+        return 1.2  # 黄金年龄段
+    elif 35 <= age < 45:
+        return 1.1  # 成熟魅力
+    elif 45 <= age < 55:
+        return 1.0  # 标准水平
+    elif 55 <= age < 65:
+        return 0.9  # 略微下降
+    else:
+        return 0.8  # 明显下降
+
+def calculate_sex_attract_score(
+        face_score, body_score, humor_score, height, age):
+    """
+    计算性吸引力得分
+    权重: 
+    - 颜值 0.3
+    - 身材 0.2
+    - 身高影响因子 0.3
+    - 幽默感 0.2
+    最后乘以年龄影响因子
+    """
+    # 基础分数计算
+    base_score = (0.3 * face_score + 
+                 0.2 * body_score + 
+                 0.2 * humor_score)
+    
+    # 身高影响
+    height_factor = get_height_attraction_factor(height)
+    height_component = 0.3 * height_factor * 5  # 将身高影响标准化到5分制
+    
+    # 合并所有组件
+    weighted_score = base_score + height_component
+    
+    # 应用年龄因子
+    age_factor = get_age_attraction_factor(age)
+    weighted_score *= age_factor
+    
+    # 加入随机波动（±0.3分）
+    random_factor = np.random.uniform(-0.3, 0.3)
+    final_score = round(weighted_score + random_factor)
+    
+    # 确保分数在1-5范围内
+    return np.clip(final_score, 1, 5)
+```
+
+## 视力状况
+
+受教育程度影响。
+
+代码如下
+
+```py
+def get_vision_probabilities(education):
+    """
+    根据教育程度返回视力状况的概率分布
+    vision_status = ['不近视', '近视低于400度', '近视高于400度']
+    """
+    if education == '研究生及以上':
+        # 高学历群体近视比例最高
+        return np.array([0.15, 0.45, 0.40])
+    elif education == '本科':
+        # 本科生近视比例也较高
+        return np.array([0.20, 0.50, 0.30])
+    elif education == '大专':
+        # 中等教育近视比例适中
+        return np.array([0.30, 0.50, 0.20])
+    else:  # 高中及以下
+        # 低教育程度近视比例较低
+        return np.array([0.50, 0.40, 0.10])
+```
+
+## 个人总资产
+
+受到年龄、收入、教育程度、所在城市影响。代码如下
+
+```py
+def calculate_personal_asset(age, income, education, current_location):
+    """
+    计算个人总资产
+    考虑：年收入、工作年限、储蓄率、生活成本、城市房产等因素
+    """
+    # 收入等级到月收入的映射（取区间中位数）
+    income_to_monthly = {
+        '<5万': 0.3,      # 月收入0.3万
+        '5-15万': 0.8,    # 月收入0.8万
+        '15-30万': 1.9,   # 月收入1.9万
+        '30-50万': 3.3,   # 月收入3.3万
+        '50-100万': 6.2,  # 月收入6.2万
+        '>100万': 12.5    # 月收入12.5万
+    }
+    
+    # 城市等级对应的月生活成本（单位：万）
+    living_cost = {
+        '一线城市': 1.0,
+        '二线城市': 0.7,
+        '三线城市': 0.5,
+        '县城': 0.3,
+        '农村': 0.2
+    }
+    
+    # 教育水平对应的基础储蓄率
+    education_saving_rate = {
+        '研究生及以上': 0.35,
+        '本科': 0.30,
+        '大专': 0.25,
+        '高中及以下': 0.20
+    }
+    
+    # 城市房产基准价值（单位：万）
+    base_house_value = {
+        '一线城市': 500,
+        '二线城市': 300,
+        '三线城市': 150,
+        '县城': 80,
+        '农村': 30
+    }
+    
+    # 基础计算
+    monthly_income = income_to_monthly[income]
+    monthly_cost = living_cost[current_location]
+    saving_rate = education_saving_rate[education]
+    working_years = max(0, age - 22) if age > 22 else 0
+    
+    # 计算积累的现金资产
+    monthly_saving = (monthly_income - monthly_cost) * saving_rate
+    if monthly_saving < 0:  # 如果收入不足以支付生活成本
+        monthly_saving = monthly_income * 0.1  # 假设至少储蓄10%
+    
+    cash_asset = monthly_saving * 12 * working_years
+    
+    # 房产资产（工作满5年且月收入大于生活成本2倍时考虑购房）
+    house_asset = 0
+    if working_years >= 5 and monthly_income > monthly_cost * 2:
+        house_value = base_house_value[current_location]
+        # 随机确定是否有房
+        # 工作年限越长，有房概率越大，最高80%
+        if np.random.random() < min(0.8, working_years/30):  
+            house_asset = house_value * (1 + 0.03 * working_years)  # 每年3%房价增值
+    
+    # 投资资产（假设有一定比例的现金用于投资）
+    investment_ratio = min(0.4, working_years/20)  # 工作年限越长，投资比例越大，最高40%
+    # 投资回报率-20%到40%
+    investment_return = cash_asset * investment_ratio * np.random.uniform(
+        -0.2, 0.4)  
+    
+    # 总资产 = 现金 + 房产 + 投资收益
+    total_asset = cash_asset + house_asset + investment_return
+    
+    # 加入小幅随机波动（±10%）
+    total_asset *= np.random.uniform(0.9, 1.1)
+    
+    # 返回资产范围
+    if total_asset < 10:
+        return '<10万'
+    elif total_asset < 50:
+        return '10-50万'
+    elif total_asset < 200:
+        return '50-200万'
+    elif total_asset < 500:
+        return '200-500万'
+    elif total_asset < 1000:
+        return '500-1000万'
+    else:
+        return '>1000万'
+```
+
+## 转换成数字
+
+文字转换成数字。具体映射表请看 `mappings.json`
+
+
+
