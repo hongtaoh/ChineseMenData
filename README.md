@@ -35,7 +35,7 @@
 
 1. **年龄**：基于全国人口年龄分布的抽样数据生成，确保样本符合实际人口年龄段比例。
 2. **身高**：按年龄段定义身高的均值和标准差，结合正态分布模拟不同年龄段的身高差异。
-3. **教育水平**：考虑年龄与地域对教育水平的影响，通过 `$P(\text{education}|\text{age}, \text{hometown})$` 模拟生成。
+3. **教育水平**：考虑年龄与地域对教育水平的影响，通过 $P(\text{education}|\text{age}, \text{hometown})$ 模拟生成。
 4. **收入**：基于年龄与教育水平的组合，通过 `$P(\text{income}|\text{age}, \text{education})$` 模拟年收入分布。
 5. **地理流动性**：结合家乡与当前居住地的流动模式，通过 `$P(\text{current\_location}|\text{hometown}, \text{education})$` 模拟地理迁移情况。
 6. **房产状况**：通过 `$P(\text{property\_status}|\text{age}, \text{income}, \text{current\_location})$` 生成房产拥有情况，考虑收入、年龄和居住地对购房的影响。
