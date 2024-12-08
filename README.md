@@ -155,9 +155,133 @@ n_samples = 1_000_000  # 样本总量
 # 计算每岁的概率分布并采样
 age_probs = get_age_probs(age_distribution)
 ages = sample_ages(age_ranges, n_samples, age_probs)
+```
+
+### 验证分布 （待完成）
+
+生成的数据经过对比验证，确保与统计数据的年龄分布一致。以下为生成数据与统计数据的对比图：
+
+- 左图：生成数据的年龄分布直方图。
+
+- 右图：生成数据与统计数据的年龄段对比条形图。
+
+```py
+import matplotlib.pyplot as plt
+
+# 汇总生成的每岁年龄到对应年龄段
+def summarize_generated_age_distribution(ages, age_distribution):
+    generated_counts = {age: list(ages).count(age) for age in range(0, 100)}
+    generated_age_distribution = {}
+    for age_group in age_distribution.keys():
+        start, end = map(int, age_group.split('-'))
+        generated_age_distribution[age_group] = sum(
+            generated_counts.get(age, 0) for age in range(start, end + 1)
+        )
+    return generated_age_distribution
+
+# 汇总结果
+generated_age_distribution = summarize_generated_age_distribution(ages, age_distribution)
+
+# 对比实际分布与生成分布
+actual_counts = list(age_distribution.values())
+generated_counts = list(generated_age_distribution.values())
+age_groups = list(age_distribution.keys())
+
+# 绘制图表
+plt.figure(figsize=(12, 5))
+
+# 左图：生成的年龄分布
+plt.subplot(1, 2, 1)
+plt.hist(ages, bins=100, color='skyblue', alpha=0.7, edgecolor='black')
+plt.xlabel('年龄')
+plt.ylabel('人数')
+plt.title('生成数据的年龄分布')
+
+# 右图：年龄段对比
+plt.subplot(1, 2, 2)
+plt.bar(age_groups, actual_counts, alpha=0.6, label='实际分布', color='orange')
+plt.bar(age_groups, generated_counts, alpha=0.6, label='生成分布', color='blue')
+plt.xlabel('年龄段')
+plt.ylabel('人数')
+plt.xticks(rotation=45)
+plt.legend()
+plt.title('实际分布与生成分布的对比')
+
+plt.tight_layout()
+plt.show()
+```
 
 
+## 家乡
 
+### 数据来源
+
+家乡分布基于经验数据，考虑中国不同区域的人口比例和城镇化水平。家乡被定义为个体的出生地或长期生活地，分为以下五类：
+
+| 家乡分类     | 比例 (%) | 
+|--------------|----------|
+| 农村         | 30.0     |
+| 县城         | 25.0     |
+| 三线城市     | 20.0     |
+| 二线城市     | 15.0     |
+| 一线城市     | 10.0     |
+
+### 生成方法
+
+1. **确定家乡类别**：按照以上比例分布随机生成家乡。
+2. **随机采样**：使用 `numpy.random.choice` 按概率生成目标样本的家乡类别。
+
+#### Python 实现代码
+
+```python
+# 家乡分布数据
+hometown_probs = {
+    '农村': 0.30,
+    '县城': 0.25,
+    '三线城市': 0.20,
+    '二线城市': 0.15,
+    '一线城市': 0.10
+}
+
+# 采样
+def sample_hometowns(hometown_probs, n_samples):
+    return np.random.choice(
+        list(hometown_probs.keys()),  # 家乡类别
+        size=n_samples,              # 样本总量
+        p=list(hometown_probs.values())  # 每类的生成概率
+    )
+
+# 生成年龄对应的家乡分布
+hometowns = sample_hometowns(hometown_probs, n_samples=1_000_000)
+```
+
+### 验证分布 （待完成）
+
+生成的数据经过对比验证，确保与家乡的目标分布一致。以下为生成分布与目标分布的对比条形图：
+
+```python
+import matplotlib.pyplot as plt
+
+# 汇总生成数据的家乡分布
+from collections import Counter
+generated_counts = Counter(hometowns)
+categories = list(hometown_probs.keys())
+actual_counts = [p * len(hometowns) for p in hometown_probs.values()]
+generated_counts_list = [generated_counts[category] for category in categories]
+
+# 绘制对比图
+plt.figure(figsize=(8, 5))
+x = range(len(categories))
+plt.bar(x, actual_counts, alpha=0.6, label='目标分布', color='orange')
+plt.bar(x, generated_counts_list, alpha=0.6, label='生成分布', color='blue')
+plt.xticks(x, categories)
+plt.xlabel('家乡类别')
+plt.ylabel('人数')
+plt.title('家乡分布目标与生成对比')
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
 
 
 
