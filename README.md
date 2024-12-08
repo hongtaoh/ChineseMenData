@@ -114,23 +114,29 @@ age_distribution = {
 }
 
 # 将年龄段比例转换为每岁比例
-total_population = sum(age_distribution.values())
-age_probs = {}
-for age_group, group_percent in age_distribution.items():
-    start, end = map(int, age_group.split('-'))
-    group_prob = group_percent / total_population
-    for age in range(start, end + 1):
-        age_probs[age] = group_prob / (end - start + 1)
+def get_age_probs(age_distribution):
+    total_population = sum(list(age_distribution.values()))
+    # key is each age from 1 to 99 and value is the prob
+    age_probs = dict()
+    for age_group, group_count in age_distribution.items():
+        group_prob = group_count/total_population
+        start, end = [int(x) for x in age_group.split('-')]
+        for i in range(start, end + 1):
+            age_probs[i] = group_prob/5
+    return age_probs 
 
-# 生成目标样本的年龄数据
-import numpy as np
+# 采样
+def sample_ages(age_ranges, n_samples, age_probs):
+    return np.random.choice(
+        age_ranges,
+        size = n_samples,
+        p = list(age_probs.values())
+    )
 
-n_samples = 1_000_000  # 样本总量
-ages = np.random.choice(
-    list(age_probs.keys()), 
-    size=n_samples, 
-    p=list(age_probs.values())
-)
+age_ranges = range(0, 100)
+n_samples = 1_000_000 # 1M
+age_probs = get_age_probs(age_distribution)
+ages = sample_ages(age_ranges, n_samples, age_probs)
 ```
 
 ### 验证分布
