@@ -12,6 +12,79 @@ import json
 # P(vision|education)
 # P(personal_assets|age, income, education, current_location)
 
+# print("\n总体教育程度分布：")
+# print(df['education'].value_counts(normalize=True))
+
+# print("\n25-35岁人群的教育程度分布：")
+# print(df[df['age'].between(25, 35)]['education'].value_counts(normalize=True))
+
+# print("\n一线城市25-35岁人群的教育程度分布：")
+# mask = (df['age'].between(25, 35)) & (df['hometown'] == '一线城市')
+# print(df[mask]['education'].value_counts(normalize=True))
+
+# # 验证不同群体的分布
+# print("\n整体收入分布：")
+# print(df['income'].value_counts(normalize=True))
+
+# # 检查退休前后的分布差异
+# print("\n退休前(55-59岁)研究生收入分布：")
+# mask = (df['age'].between(55, 59)) & (df['education'] == '研究生及以上')
+# print(df[mask]['income'].value_counts(normalize=True))
+
+# print("\n退休后(65-70岁)研究生收入分布：")
+# mask = (df['age'].between(65, 70)) & (df['education'] == '研究生及以上')
+# print(df[mask]['income'].value_counts(normalize=True))
+
+# # 检查年龄段的影响
+# print("\n25-35岁本科学历收入分布：")
+# mask = (df['age'].between(25, 35)) & (df['education'] == '本科')
+# print(df[mask]['income'].value_counts(normalize=True))
+
+# print("\n35-45岁本科学历收入分布：")
+# mask = (df['age'].between(35, 45)) & (df['education'] == '本科')
+# print(df[mask]['income'].value_counts(normalize=True))
+
+# # 验证分布
+# print("\n整体人口流动情况：")
+# print(pd.crosstab(df['hometown'], df['current_location'], normalize='index'))
+
+# print("\n研究生及以上学历的人口流动：")
+# mask = df['education'] == '研究生及以上'
+# print(pd.crosstab(df[mask]['hometown'], df[mask]['current_location'], normalize='index'))
+
+# print("\n高中及以下学历的人口流动：")
+# mask = df['education'] == '高中及以下'
+# print(pd.crosstab(df[mask]['hometown'], df[mask]['current_location'], normalize='index'))
+
+# # 验证分布
+# print("\n不同收入水平的房产状况：")
+# print(pd.crosstab(df['income'], df['property_status'], normalize='index'))
+
+# print("\n不同城市的房产状况：")
+# print(pd.crosstab(df['current_location'], df['property_status'], normalize='index'))
+
+# print("\n一线城市不同收入的房产状况：")
+# mask = df['current_location'] == '一线城市'
+# print(pd.crosstab(df[mask]['income'], df[mask]['property_status'], normalize='index'))
+
+# # 检查年龄的影响
+# print("\n一线城市高收入(>50万)不同年龄段的房产状况：")
+# mask = (df['current_location'] == '一线城市') & (df['income'].isin(['50-100万', '>100万']))
+# df['age_group'] = pd.cut(df['age'], bins=[0, 25, 30, 40, 50, 100], 
+#                         labels=['<25', '25-30', '30-40', '40-50', '>50'])
+# print(pd.crosstab(df[mask]['age_group'], df[mask]['property_status'], normalize='index'))
+
+# # 按年龄段统计婚姻状况
+# df['age_group'] = pd.cut(df['age'], 
+#                         bins=[0, 22, 26, 30, 35, 40, 50, 100],
+#                         labels=['<22', '22-26', '26-30', '30-35', '35-40', '40-50', '>50'])
+
+# print("各年龄段婚姻状况分布：")
+# print(pd.crosstab(df['age_group'], df['marital_status'], normalize='index'))
+
+# print("\n各年龄段健康状况分布：")
+# print(pd.crosstab(df['age_group'], df['health_status'], normalize='index'))
+
 
 def get_age_probs(age_distribution):
     total_population = sum(list(age_distribution.values()))
@@ -367,7 +440,6 @@ def generate_height(ages):
     
     return heights
 
-
 def get_marital_status_probabilities(age):
     """
     根据年龄返回婚姻状况的概率分布
@@ -452,7 +524,6 @@ def generate_independent_features(n_samples):
             p=[0.50, 0.40, 0.10]
         ),
     }
-
 
 def get_height_attraction_factor(height):
     """
