@@ -1,14 +1,13 @@
 # 中国男性人口合成数据生成
-
 <p align="center">
-  <img src="https://img.shields.io/badge/NOTE%20TO%20CRITICS-%E5%9B%9E%E5%A4%8D%E5%96%B7%E5%AD%90-red?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/NOTE%20TO%20CRITICS-%E8%87%B4%E5%96%B7%E5%AD%90-red?style=for-the-badge" />
 </p>
 
 > ⚠️ **Note to Critics / 回复喷子**
 >
 > This project was made **for fun and exploration**, not for profit or formal research.  
 > If you believe the data are "not rigorous" or "not real enough",  
-> then instead of [posting hostile comments](https://hermatch.mcpport.com/), **build a better one yourself.**
+> then instead of [posting hostile comments]([https://hermatch.mcpport.com/](https://linux.do/t/topic/1031157/23)), **build a better one yourself.**
 >
 > Talking is cheap — **creation speaks louder.**
 >
@@ -19,7 +18,7 @@
 > 某些验证我**确实没做**，因为那不是重点。  
 > 如果你觉得不够好、不够严谨，  
 > 请**自己去做一个更好的版本**，  
-> **比[嘴炮](https://hermatch.mcpport.com/)更有意义。**
+> **比[嘴炮]([https://hermatch.mcpport.com/](https://linux.do/t/topic/1031157/23))更有意义。**
 
 
 ## 目录
