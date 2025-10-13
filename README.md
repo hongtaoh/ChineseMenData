@@ -1,27 +1,25 @@
 # 中国男性人口合成数据生成
 
 <p align="center">
-  <img src="https://img.shields.io/badge/NOTE%20TO%20CRITICS-%E5%AF%B9%E6%89%93%E5%87%BB%E8%80%85%E7%9A%84%E5%9B%9E%E5%A4%8D-red?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/NOTE%20TO%20CRITICS-%E5%9B%9E%E5%A4%8D%E5%96%B7%E5%AD%90-red?style=for-the-badge" />
 </p>
 
-> ⚠️ **Note to Critics / 致批评者**
+> ⚠️ **Note to Critics / 回复喷子**
 >
-> This project was created **for fun, exploration, and personal curiosity**.  
-> It is **not a commercial or academic product**, and some data or methods are intentionally simplified.  
-> If you think the data are “not rigorous enough” or “poorly designed,”  
-> then instead of leaving malicious or condescending comments,  
-> **build a better one yourself.**
+> This project was made **for fun and exploration**, not for profit or formal research.  
+> If you believe the data are "not rigorous" or "not real enough",  
+> then instead of posting hostile comments, **build a better one yourself.**
 >
-> Talking is cheap — **creating something better is what truly matters.**
+> Talking is cheap — **creation speaks louder.**
 >
 > ---
 >
-> 本项目是出于**兴趣和探索**而制作的，并非商业或学术研究。  
-> 某些验证内容我**确实没有做，也没有必要做**。  
-> 如果你觉得数据“不够好”或“不够严谨”，  
-> 与其说些恶意的话，不如**自己做一个更好的版本**。  
->
-> **批评很容易，创造才是更有意义的事。**
+> 本项目纯属个人兴趣与实验性质。  
+> 并非商业项目，也不是学术研究。  
+> 某些验证我**确实没做**，因为那不是重点。  
+> 如果你觉得不够好、不够严谨，  
+> 请**自己去做一个更好的版本**，  
+> **比嘴炮更有意义。**
 
 
 ## 目录
