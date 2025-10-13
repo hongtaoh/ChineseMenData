@@ -3,7 +3,7 @@
   <img src="https://img.shields.io/badge/NOTE%20TO%20CRITICS-%E8%87%B4%E5%96%B7%E5%AD%90-red?style=for-the-badge" />
 </p>
 
-> ⚠️ **Note to Critics / 回复喷子**
+> ⚠️ **Note to Critics / 致喷子**
 >
 > This project was made **for fun and exploration**, not for profit or formal research.  
 > If you believe the data are "not rigorous" or "not real enough",  
