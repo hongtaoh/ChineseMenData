@@ -1,5 +1,18 @@
 # 中国男性人口合成数据生成
 
+## 版权
+
+Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
+
+本项目采用 《[署名-非商业性使用-相同方式共享4.0 协议 (CC BY-NC-SA 4.0)][cc-by-nc-sa]》进行授权。全文转载、部分引用、二次演绎必须注明署名和链接，禁止商用，禁止以其他协议发布。
+
+[![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
+
+[cc-by-nc-sa]: http://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh
+[cc-by-nc-sa-image]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
+[cc-by-nc-sa-shield]: https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg
+
+
 <p align="center">
   <img src="https://img.shields.io/badge/NOTE%20TO%20CRITICS-%E8%87%B4%E5%96%B7%E5%AD%90-red?style=for-the-badge" />
 </p>
